@@ -1,0 +1,9 @@
+[default.rtt]
+enabled = true
+up_channel = 0
+
+[default.general]
+chip = "STM32H7B3LIHxQ"
+
+[default.flashing]
+enabled = true
