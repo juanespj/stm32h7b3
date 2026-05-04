@@ -22,8 +22,16 @@ async fn blinky(mut led: Output<'static>) -> ! {
 
 #[embassy_executor::main]
 async fn main(spawner: Spawner) -> ! {
-    let p = embassy_stm32::init(Default::default());
-    info!("Hello!");
+    let mut config = embassy_stm32::Config::default();
+
+    // This is the critical setting for most official H7 kits (like the DK or Nucleo)
+    // It configures the VOS (Voltage Output Scale) and power source.
+    config.rcc.supply_config = embassy_stm32::rcc::SupplyConfig::LDO;
+
+    let p = embassy_stm32::init(config);
+
+    // If you get past the line above, your terminal will spring to life.
+    info!("Hello from the H7B3!");
 
     let led = Output::new(p.PG13, Level::Low, Speed::Low);
     spawner.spawn(blinky(led).unwrap());
