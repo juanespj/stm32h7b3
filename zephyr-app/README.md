@@ -11,7 +11,7 @@ Save and exit (Ctrl+O, Enter, then Ctrl+X).
 Reload the configuration:
 source ~/.bashrc
 export PATH=$PATH:/home/jedev/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin
-
+export STM32_PROGRAMMER_CLI=/usr/local/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin/STM32_Programmer_CLI
 Before building, set up the Zephyr environment:
 
 ```bash
@@ -19,7 +19,7 @@ export ZEPHYR_BASE=~/zephyrproject/zephyr
 source "$ZEPHYR_BASE/zephyr-env.sh"
 source ~/zephyrproject/.venv/bin/activate
 ```
-
+rm -rf build/
 ## Build Instructions
 
 ```bash
