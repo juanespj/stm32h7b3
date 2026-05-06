@@ -1,0 +1,25 @@
+/* Override sram0 to 1MB to fit framebuffer (RGB565 = 255KB) */
+&sram0 {
+    reg = <0x24000000 0x100000>;
+};
+
+&ltdc {
+    /delete-property/ ext-sdram;
+};
+
+&fmc {
+    status = "disabled";
+};
+
+/* Enable I2C4 for touch controller - use board defaults (PD12/PD13) */
+&i2c4 {
+    status = "okay";
+
+    /* FT5336 touch controller - use board's default INT pin (GPIOH 2) */
+    ft5336@38 {
+        compatible = "focaltech,ft5336";
+        reg = <0x38>;
+        int-gpios = <&gpioh 2 GPIO_ACTIVE_LOW>;
+        status = "okay";
+    };
+};
