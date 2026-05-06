@@ -31,6 +31,7 @@ stm32h7b3/
 - **Board**: STM32H7B3I Discovery (MB1315)
 - **LED**: PG13
 - **Button**: PA0 (active low / pulled up)
+- **Touch**: FT5336, I2C4 0x38, SCL=PD12, SDA=PD13
 - **Debug**: probe-rs via SWD
 
 ## Memory Layout
