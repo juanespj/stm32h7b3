@@ -1,5 +1,7 @@
 # STM32H7B3I-DK Zephyr Display Demo
 
+export PATH=$PATH:/home/jedev/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin
+
 Before building, set up the Zephyr environment:
 
 ```bash
@@ -18,6 +20,7 @@ source ~/zephyrproject/.venv/bin/activate
 cd zephyr-app
 west build -b stm32h7b3i_dk
 
+west build -S cdc-acm-console [...] turns usb into virtual serial
 # Flash to board
 west flash
 ```
