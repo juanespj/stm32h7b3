@@ -1,0 +1,16 @@
+/* Override sram0 to 1MB to fit framebuffer (RGB565 = 255KB) */
+&sram0 {
+    reg = <0x24000000 0x100000>;
+};
+
+&ltdc {
+    /delete-property/ ext-sdram;
+};
+
+&fmc {
+    status = "disabled";
+};
+
+&fmc {
+    status = "disabled";
+};

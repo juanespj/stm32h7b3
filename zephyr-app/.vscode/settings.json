@@ -1,0 +1,9 @@
+{
+  "ollama-copilot.baseUrl": "http://localhost:11434",
+  "ollama-copilot.model": "codellama:latest",
+  "ollama-copilot.chatModel": "codellama:latest",
+  "ollama-copilot.autocompleteEnabled": true,
+  "ollama-copilot.maxTokens": 150,
+  "ollama-copilot.temperature": 0.4,
+  "ollama-copilot.debounceMs": 250
+}

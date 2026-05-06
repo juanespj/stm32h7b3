@@ -1,0 +1,24 @@
+# Renode script for STM32H7B3I-DK Zephyr Display Demo
+# 
+# Usage from zephyr-app directory:
+#   renode renode/stm32h7b3i_dk.resc
+#
+# Or from Renode monitor (in zephyr-app directory):
+#   include @renode/stm32h7b3i_dk.resc
+
+# Create STM32H7B3 platform using local .repl file
+mach create "STM32H7B3I-DK"
+machine LoadPlatformDescription @renode/stm32h7b3.repl
+
+# Set up UART1 for console output
+showAnalyzer uart1
+
+# Load the Zephyr application (from zephyr-app directory)
+sysbus LoadELF @build/zephyr/zephyr.elf
+
+# Log a message to confirm loading
+echo "Zephyr application loaded. Starting emulation..."
+
+# Start emulation
+start
+
