@@ -11,19 +11,15 @@
     status = "disabled";
 };
 
-/* Enable I2C4 for touch controller */
+/* Enable I2C4 for touch controller - use board defaults (PD12/PD13) */
 &i2c4 {
     status = "okay";
-    pinctrl-0 = <&i2c4_scl_pb6 &i2c4_sda_pb7>;
-    pinctrl-names = "default";
-    clock-frequency = <I2C_BITRATE_FAST>;
 
-    /* FT5336 touch controller */
+    /* FT5336 touch controller - use board's default INT pin (GPIOH 2) */
     ft5336@38 {
         compatible = "focaltech,ft5336";
         reg = <0x38>;
-        int-gpios = <&gpiog 5 GPIO_ACTIVE_LOW>;
-        reset-gpios = <&gpiog 3 GPIO_ACTIVE_LOW>;
+        int-gpios = <&gpioh 2 GPIO_ACTIVE_LOW>;
         status = "okay";
     };
 };
