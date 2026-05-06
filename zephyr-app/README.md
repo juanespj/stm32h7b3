@@ -1,5 +1,15 @@
 # STM32H7B3I-DK Zephyr Display Demo
+Open your shell configuration file. If you are using the default bash, use:
+nano ~/.bashrc
+(If you use Zsh, use nano ~/.zshzrc instead).
 
+Add this line to the very bottom of the file:
+export PATH=$PATH:/home/jedev/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin
+
+Save and exit (Ctrl+O, Enter, then Ctrl+X).
+
+Reload the configuration:
+source ~/.bashrc
 export PATH=$PATH:/home/jedev/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin
 
 Before building, set up the Zephyr environment:
