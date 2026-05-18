@@ -152,13 +152,22 @@ impl<'d> Ft5336<'d> {
         Self { i2c }
     }
 
-    fn init(&mut self) {
+    async fn init(&mut self) {
         info!("Initializing touch controller at 0x{:02X}", Self::ADDR);
         let mut buf = [0u8; 1];
-        match self.i2c.blocking_write_read(Self::ADDR, &[0x00], &mut buf) {
-            Ok(_) => info!("Touch IC ID: {}", buf[0]),
-            Err(e) => info!("Failed to init touch IC: {:?}", e),
+        for attempt in 1..=5 {
+            match self.i2c.blocking_write_read(Self::ADDR, &[0x00], &mut buf) {
+                Ok(_) => {
+                    info!("Touch IC ID: {}", buf[0]);
+                    return;
+                }
+                Err(e) => {
+                    info!("Touch init attempt {} failed: {:?}", attempt, e);
+                    Timer::after_millis(10).await;
+                }
+            }
         }
+        info!("Touch init failed after retries");
     }
 
     fn read_touch(&mut self) -> Option<(i32, i32)> {
@@ -166,14 +175,22 @@ impl<'d> Ft5336<'d> {
         match self.i2c.blocking_write_read(Self::ADDR, &[0x02], &mut buf) {
             Ok(_) => {
                 let num_touches = buf[0] & 0x0F;
-                if num_touches > 0 {
-                    let x = ((buf[1] as u16 & 0x0F) << 8) | buf[2] as u16;
-                    let y = ((buf[3] as u16 & 0x0F) << 8) | buf[4] as u16;
-                    let x = x.min(479) as i32;
-                    let y = y.min(271) as i32;
-                    return Some((x, y));
+                if num_touches == 0 || num_touches > 2 {
+                    return None;
                 }
-                None
+
+                let raw_x = ((buf[1] as u16 & 0x0F) << 8) | buf[2] as u16;
+                let raw_y = ((buf[3] as u16 & 0x0F) << 8) | buf[4] as u16;
+
+                if raw_x == 0x0FFF || raw_y == 0x0FFF {
+                    return None;
+                }
+
+                if raw_x >= DISPLAY_WIDTH as u16 || raw_y >= DISPLAY_HEIGHT as u16 {
+                    return None;
+                }
+
+                return Some((raw_x as i32, raw_y as i32));
             }
             Err(e) => {
                 info!("Touch read error: {:?}", e);
@@ -316,7 +333,7 @@ async fn main(spawner: Spawner) {
     );
 
     let mut touch = Ft5336::new(i2c);
-    touch.init();
+    touch.init().await;
 
     info!("creating UI");
     let mut btn1 = Button::new(100, 100, 120, 50, "Click Me!", Rgb888::new(200, 0, 0));
